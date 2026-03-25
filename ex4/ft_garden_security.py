@@ -28,7 +28,7 @@ class Plant:
 		self._age += days
 
 	def grow(self, daily_growth: float = 0.8)->float:
-		self.height += daily_growth
+		self._height += daily_growth
 		self.age()
 		return daily_growth
 

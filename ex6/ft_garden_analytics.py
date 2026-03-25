@@ -1,16 +1,17 @@
 # **************************************************************************** #
 #                                                                              #
 #                                                         :::      ::::::::    #
-#    ft_plant_types.py                                  :+:      :+:    :+:    #
+#    ft_garden_analytics.py                             :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
 #    By: mamiandr <mamiandr@student.42antananari    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2026/03/24 11:39:15 by mamiandr          #+#    #+#              #
-#    Updated: 2026/03/24 11:39:15 by mamiandr         ###   ########.fr        #
+#    Created: 2026/03/25 06:43:40 by mamiandr          #+#    #+#              #
+#    Updated: 2026/03/25 06:43:40 by mamiandr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 #!usr/bin/env python3
+
 
 class Plant:
 	""" A class representing a plant with a name, height, and age."""
@@ -73,6 +74,14 @@ class Plant:
 		self._age = age
 		print(f"Age updated: {self._age} days")
 
+	@staticmethod
+	def older_than_year(age:int)-> bool:
+		return age > 365
+
+	@classmethod
+	def annonymous_plant(cls, height: float=0.0, age: int=0):
+		return cls(name="Unknown plant", height=height, age=age)
+
 class Flower(Plant):
 	def __init__(self, name: str, height: float, age: int, color: str):
 		super().__init__(name, height, age)
@@ -94,6 +103,8 @@ class Flower(Plant):
 			print(f"{self.name} failed to bloom.")
 
 class Tree(Plant):
+	number_of_shades_produced: int = 0
+
 	def __init__(self, name: str, height: float, age: int, trunk_diameter : float):
 		super().__init__(name, height, age)
 		self._trunk_diameter:float = trunk_diameter
@@ -105,6 +116,7 @@ class Tree(Plant):
 	def produce_shade(self)-> None:
 		print(f"[asking the {self.name.lower()} to produce shade]")
 		print(f"Tree {self.name.capitalize()} now providing a shade of {self.get_height()}cm long and {self._trunk_diameter}cm wide.")
+		Tree.number_of_shades_produced += 1
 
 class Vegetables(Plant):
 	def __init__(self, name: str, height: float, age: int, harvest_season: str):
@@ -132,6 +144,22 @@ class Vegetables(Plant):
 		else:
 			growth = super().grow(daily_growth)
 		return growth
+
+
+def statistics(plants: list)-> None:
+	if not plants:
+		print("No plants to analyze.")
+		return
+	total_height: float = 0.0
+	total_age: int = 0
+	for plant in plants:
+		total_height += plant.get_height()
+		total_age += plant.get_age()
+	average_height: float = total_height / len(plants)
+	average_age: float = total_age / len(plants)
+	print(f"Average height of the plants: {round(average_height, 1)}cm")
+	print(f"Average age of the plants: {int(average_age)} days")
+
 
 if __name__ == "__main__":
 	print("=== Garden Plant Types ===")
